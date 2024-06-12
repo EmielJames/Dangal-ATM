@@ -1,4 +1,4 @@
-package dATM;
+package dARM;
 
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -29,21 +29,20 @@ import java.awt.event.KeyEvent;
 public class Landing extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private JFrame frame;
     private JPanel landingPane;
     private BufferedImage backgroundImage;
     private JTextField userTextField;
     private Dashboard dashboard;
-    private Database database;
-    private Balance balance;
     
     private String[] header = {"STUDENT NUMBER", "FIRST NAME", "LAST NAME"};
-	private String[][] data = {{"2300650", "MAG-USARA, KIRT ASIA", "69420.00"},
-							   {"2300649", "FATAL, MOISES JR.", "42690.00"},
-							   {"2300646", "FARINAS, JORICK CHRISTIAN", "10000.00"},
-							   {"2300640", "ESCUZAR, EMIEL JAMES", "20000.00"},
-							   {"2302745", "PEGA, JEDE ISAIAH MAXWEIL", "30000.00"}};
-	
+	private String[][] data = {
+        {"2300650", "MAG-USARA, KIRT ASIA", "₱69,420.00"},
+		{"2300649", "FATAL, MOISES JR.", "₱42,690.00"},
+		{"2300646", "FARINAS, JORICK CHRISTIAN", "₱10,000.00"},
+		{"2300640", "ESCUZAR, EMIEL JAMES", "₱20,000.00"},
+		{"2302745", "PEGA, JEDE ISAIAH MAXWEIL", "₱30,000.00"}
+    };
+
     /**
      * Launch the application.
      */
@@ -70,7 +69,7 @@ public class Landing extends JFrame {
         setSize(1024, 768);
 
         try {
-            backgroundImage = ImageIO.read(new File("C:\\Users\\Kirt Asia\\Dangal-ATM\\dATM\\img\\bg.png"));
+            backgroundImage = ImageIO.read(new File("C:\\Users\\ljame\\Downloads\\Dangal-ATM-main (1)\\Dangal-ATM-main\\img\\bg.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,71 +91,70 @@ public class Landing extends JFrame {
         setContentPane(landingPane);
         landingPane.setLayout(null);
         
-        JPanel loginPanel = new JPanel();
+        JPanel loginPanel = new RoundedPanel();
         loginPanel.setBackground(SystemColor.control);
-        loginPanel.setBounds(46, 71, 410, 634);
+        loginPanel.setBounds(50, 60, 410, 636);
         landingPane.add(loginPanel);
         loginPanel.setLayout(null);
         
         // Custom panel for logo image
-        JPanel logoPanel = new ImagePanel("C:\\Users\\Kirt Asia\\Dangal-ATM\\dATM\\img\\Dangal ATM.png");
+        JPanel logoPanel = new ImagePanel("C:\\Users\\ljame\\Downloads\\Dangal-ATM-main (1)\\Dangal-ATM-main\\img\\Dangal ATM.png");
         logoPanel.setBounds(55, 80, 310, 100);
         loginPanel.add(logoPanel);
         
         JLabel customerLabel = new JLabel("USER LOGIN");
-        customerLabel.setForeground(new Color(46, 139, 87));
+        customerLabel.setForeground(new Color(17, 141, 87));
         customerLabel.setFont(new Font("Poppins", Font.BOLD, 25));
         customerLabel.setBackground(Color.GREEN);
         customerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        customerLabel.setBounds(31, 221, 352, 31);
+        customerLabel.setBounds(10, 221, 400, 31);
         loginPanel.add(customerLabel);
         
         // Custom panel with rounded corners
         JPanel cuslblPane = new RoundedPanel(30); // 30 is the radius of the corners
-        cuslblPane.setBackground(new Color(144, 238, 144));
+        cuslblPane.setBackground(new Color(225, 245, 225));
         cuslblPane.setBounds(31, 210, 350, 53);
         loginPanel.add(cuslblPane);
         
         // Custom panel for profile icon
-        JPanel profileIcon = new ImagePanel("C:\\Users\\Kirt Asia\\Desktop\\School\\1CS-A\\2nd Sem\\CCS103\\dATM img\\user-fill.png");
+        JPanel profileIcon = new ImagePanel("C:\\Users\\ljame\\Downloads\\Dangal-ATM-main (1)\\Dangal-ATM-main\\img\\user-fill.png");
         profileIcon.setBounds(40, 325, 20, 20);
         loginPanel.add(profileIcon);
         
+        
         userTextField = new JTextField();
-       
-        userTextField.setFont(new Font("Tahoma", Font.PLAIN, 40));
+        userTextField.setFont(new Font("Tahoma", Font.BOLD, 40));
+        userTextField.setForeground(new Color(17, 141, 87));
         userTextField.setHorizontalAlignment(SwingConstants.CENTER);
         userTextField.setBounds(79, 294, 280, 82);
         loginPanel.add(userTextField);
         userTextField.setColumns(10);
         
         JButton loginBTN = new RoundedButton("Login");
-        loginBTN.setBackground(new Color(102, 255, 102));
-        loginBTN.setBounds(130, 440, 136, 40);
+        loginBTN.setBackground(new Color(46,149,87));
+        loginBTN.setForeground(new Color(255, 255, 255));
+        loginBTN.setBounds(130, 440, 140, 50);
+        loginBTN.setFont(new Font("Tahoma", Font.BOLD, 24)); // Set a larger font size
         loginPanel.add(loginBTN);	
         
         JLabel lblNewLabel = new JLabel("Activate Account");
-        lblNewLabel.setForeground(new Color(46, 139, 87));
-        lblNewLabel.setFont(new Font("Poppins Medium", Font.PLAIN, 25));
+        lblNewLabel.setForeground(new Color(17, 141, 87));
+        lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 20));
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        lblNewLabel.setBounds(69, 386, 273, 39);
+        lblNewLabel.setBounds(0, 386, 410, 39);
         loginPanel.add(lblNewLabel);
         
-        
-        //Events
+        // Events
         loginBTN.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		
-        		for(int i = 0; i <= data[0].length; i++) {
+        		for(int i = 0; i < data.length; i++) {
         			if(userTextField.getText().equals(data[i][0])) {
             			Landing.this.dispose();
             			dashboard = new Dashboard(data[i]);
                     	dashboard.setVisible(true);
                     	dashboard.setLocationRelativeTo(null);
-                    	
         			}
-        			
         		}
         		userTextField.setText(null);
         	}
@@ -175,32 +173,34 @@ public class Landing extends JFrame {
         userTextField.addKeyListener(new KeyAdapter() {
            @Override
            public void keyPressed(KeyEvent e) {
-        	   if(e.getKeyCode() == e.VK_ENTER) {
-        		   for(int i = 0; i <= data[0].length; i++) {
+        	   if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+        		   for(int i = 0; i < data.length; i++) {
            			if(userTextField.getText().equals(data[i][0])) {
                			Landing.this.dispose();
                			dashboard = new Dashboard(data[i]);
                        	dashboard.setVisible(true);
                        	dashboard.setLocationRelativeTo(null);
            			}
-           			
            		}
            		userTextField.setText(null);
         	   }
-            	}
-            });	
-        
+            }
+        });	
     }
 
     // Custom JPanel class with rounded corners
     class RoundedPanel extends JPanel {
-        private static final long serialVersionUID = 1L;
-        private int cornerRadius;
+        private static final long serialUID = 1L;
+        private int cornerRadius = 15;
+
+        public RoundedPanel() {
+            super();
+            setOpaque(false); // To ensure the background is transparent
+        }
 
         public RoundedPanel(int radius) {
-            super();
+            this();
             this.cornerRadius = radius;
-            setOpaque(false); // To ensure the background is transparent
         }
 
         @Override
@@ -215,7 +215,7 @@ public class Landing extends JFrame {
 
     // Custom JPanel class for displaying an image
     class ImagePanel extends JPanel {
-        private static final long serialVersionUID = 1L;
+        private static final long serialUID = 1L;
         private BufferedImage image;
 
         public ImagePanel(String imagePath) {
@@ -236,13 +236,15 @@ public class Landing extends JFrame {
         }
     }
 
-    // Custom JButton class with rounded corners
+    // Custom JButton class with rounded corners and no visible border
     class RoundedButton extends JButton {
-        private static final long serialVersionUID = 1L;
+        private static final long serialUID = 1L;
         
         public RoundedButton(String text) {
             super(text);
-            setContentAreaFilled(false);
+            setContentAreaFilled(false); // To remove the default fill behavior
+            setBorderPainted(false); // To ensure the border is not painted
+            setFocusPainted(false); // To remove the focus border
         }
 
         @Override
@@ -257,11 +259,7 @@ public class Landing extends JFrame {
 
         @Override
         protected void paintBorder(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(getForeground());
-            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 30, 30);
-            g2.dispose();
+            // Overridden to remove the border painting
         }
 
         @Override
