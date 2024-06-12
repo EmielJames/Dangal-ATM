@@ -1,9 +1,9 @@
-package dATM;
-
+package dARM;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +17,10 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
 
-public class PIN {
+public class pin {
 
 	private JFrame frame;
 	private JPanel bgPane;
@@ -33,7 +34,7 @@ public class PIN {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PIN window = new PIN();
+					pin window = new pin();
 					window.frame.setVisible(true);
 					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
@@ -46,7 +47,7 @@ public class PIN {
 	/**
 	 * Create the application.
 	 */
-	public PIN() {
+	public pin() {
 		initialize();
 	}
 
@@ -88,33 +89,33 @@ public class PIN {
 		logoPanel.setBounds(350, 80, 250, 100);
 		bgPane.add(logoPanel);
 		bgPane.setLayout(null);
-		
-		JPanel DepositDashboardInfoPane = new JPanel();
+		// panel na nakalagay lahat
+		JPanel DepositDashboardInfoPane = new RoundedPanel();
 		DepositDashboardInfoPane.setBackground(new Color(255, 255, 255));
 		DepositDashboardInfoPane.setBounds(45, 238, 930, 480);
 		bgPane.add(DepositDashboardInfoPane);
 		DepositDashboardInfoPane.setLayout(null);
 		
-		JButton cancelBtn = new JButton("CANCEL");
+		JButton cancelBtn = new RoundedButton("CANCEL");
 		cancelBtn.setForeground(new Color(255, 255, 255));
-		cancelBtn.setBackground(new Color(0, 128, 0));
+		cancelBtn.setBackground(new Color(0, 191, 255));
 		cancelBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
-		cancelBtn.setBounds(385, 367, 135, 63);
+		cancelBtn.setBounds(500, 376, 135, 63);
 		DepositDashboardInfoPane.add(cancelBtn);
 		
-		JButton confirmBtn = new JButton("CONFIRM");
+		JButton confirmBtn = new RoundedButton("CONFIRM");
 		confirmBtn.setForeground(new Color(240, 255, 255));
-		confirmBtn.setBackground(new Color(0, 128, 0));
+		confirmBtn.setBackground(new Color(26, 172, 119));
 		confirmBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		confirmBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
-		confirmBtn.setBounds(137, 367, 135, 63);
+		confirmBtn.setBounds(700, 376, 135, 63);
 		DepositDashboardInfoPane.add(confirmBtn);
 		
 		pinLabel = new JTextField();
-		pinLabel.setBackground(new Color(192, 192, 192));
+		pinLabel.setBackground(new Color(225, 245, 225));
 		pinLabel.setForeground(new Color(0, 100, 0));
 		pinLabel.setFont(new Font("Tahoma", Font.PLAIN, 45));
 		pinLabel.setBounds(78, 168, 765, 102);
@@ -128,26 +129,16 @@ public class PIN {
 		DepositDashboardLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		DepositDashboardLbl.setFont(new Font("Tahoma", Font.BOLD, 35));
 		
-		JLabel balanceLbl = new JLabel(" ");
-		balanceLbl.setFont(new Font("Tahoma", Font.BOLD, 30));
-		balanceLbl.setBounds(662, 87, 258, 25);
-		DepositDashboardInfoPane.add(balanceLbl);
 		
-		JLabel NameLbl = new JLabel(" ");
-		NameLbl.setFont(new Font("Tahoma", Font.BOLD, 15));
-		NameLbl.setBounds(260, 115, 135, 25);
-		DepositDashboardInfoPane.add(NameLbl);
 		
-		JLabel NumberLbl = new JLabel(" ");
-		NumberLbl.setFont(new Font("Tahoma", Font.BOLD, 15));
-		NumberLbl.setBounds(238, 144, 135, 25);
-		DepositDashboardInfoPane.add(NumberLbl);
 		
-		JButton eraseBTN = new JButton("DELETE");
+		
+		
+		JButton eraseBTN = new RoundedButton("DELETE");
 		eraseBTN.setForeground(new Color(240, 255, 255));
 		eraseBTN.setFont(new Font("Tahoma", Font.BOLD, 20));
-		eraseBTN.setBackground(new Color(0, 128, 0));
-		eraseBTN.setBounds(635, 367, 135, 63);
+		eraseBTN.setBackground(new Color(255, 127, 127));
+		eraseBTN.setBounds(300, 376, 135, 63);
 		DepositDashboardInfoPane.add(eraseBTN);
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -155,26 +146,73 @@ public class PIN {
 		});
 	}
 
-	// Custom JPanel class for displaying an image
-	class ImagePanel extends JPanel {
-		private static final long serialVersionUID = 1L;
-		private BufferedImage image;
+    // Custom JPanel class with rounded corners
+    class RoundedPanel extends JPanel {
+        private static final long serialUID = 1L;
+        private int cornerRadius = 15;
 
-		public ImagePanel(String imagePath) {
-			try {
-				image = ImageIO.read(new File(imagePath));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			setOpaque(false);
-		}
+        public RoundedPanel() {
+            super();
+            setOpaque(false); // To ensure the background is transparent
+        }
 
-		@Override
-		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			if (image != null) {
-				g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-			}
-		}
-	}
+        public RoundedPanel(int radius) {
+            this();
+            this.cornerRadius = radius;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
+        }
+    }
+
+    // Custom JPanel class for displaying an image
+    class ImagePanel extends JPanel {
+        private static final long serialUID = 1L;
+        private BufferedImage image;
+
+        public ImagePanel(String imagePath) {
+            try {
+                image = ImageIO.read(new File(imagePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (image != null) {
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
+    }
+
+    // Custom JButton class with rounded corners and no visible border
+    class RoundedButton extends JButton {
+        private static final long serialUID = 1L;
+        
+        public RoundedButton(String text) {
+            super(text);
+            setContentAreaFilled(false); // To remove the default fill behavior
+            setBorderPainted(false); // To ensure the border is not painted
+            setFocusPainted(false); // To remove the focus border
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+            super.paintComponent(g2);
+            g2.dispose();
+        }
+    }
 }
