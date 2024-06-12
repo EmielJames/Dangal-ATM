@@ -1,4 +1,4 @@
-package dATM;
+package dARM;
 
 import java.awt.EventQueue;
 
